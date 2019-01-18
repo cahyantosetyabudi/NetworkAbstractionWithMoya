@@ -10,13 +10,14 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    var networkProvider: NetworkManager!
+    var networkProvider = NetworkManager()
+    var movies: [Movie] = []
+    
+    @IBOutlet weak var tableView: UITableView!
     
     init(networkProvider: NetworkManager) {
         self.networkProvider = networkProvider
         super.init(nibName: nil, bundle: nil)
-
-
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -26,11 +27,31 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = UIColor.green
         networkProvider.getNewMovies(page: 1) { (movies) in
-            print(movies)
+            self.movies = movies
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
         }
     }
 
 }
 
+extension ViewController: UITableViewDelegate {
+    
+}
+
+extension ViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return movies.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! UITableViewCell
+        cell.textLabel?.text = movies[indexPath.row].title
+        
+        return cell
+    }
+    
+    
+}

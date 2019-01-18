@@ -12,11 +12,11 @@ import UIKit
 struct Movie {
     let id: Int
     let posterPath: String
-    let videoPath: String
+    let videoPath: Bool
     let backdrop: String
     let title: String
     let releaseDate: String
-    let rating: String
+    let rating: Double
     let overview: String
 }
 
@@ -24,7 +24,7 @@ extension Movie: Decodable {
     enum MovieCodingKeys: String, CodingKey {
         case id
         case posterPath = "poster_path"
-        case videoPath
+        case videoPath = "video"
         case backdrop = "backdrop_path"
         case title
         case releaseDate = "release_date"
@@ -37,11 +37,11 @@ extension Movie: Decodable {
         
         id = try container.decode(Int.self, forKey: .id)
         posterPath = try container.decode(String.self, forKey: .posterPath)
-        videoPath = try container.decode(String.self, forKey: .videoPath)
+        videoPath = try container.decode(Bool.self, forKey: .videoPath)
         backdrop = try container.decode(String.self, forKey: .backdrop)
         title = try container.decode(String.self, forKey: .title)
         releaseDate = try container.decode(String.self, forKey: .releaseDate)
-        rating = try container.decode(String.self, forKey: .rating)
+        rating = try container.decode(Double.self, forKey: .rating)
         overview = try container.decode(String.self, forKey: .overview)
     }
 }

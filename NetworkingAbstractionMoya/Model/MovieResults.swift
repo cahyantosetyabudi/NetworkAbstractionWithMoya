@@ -12,15 +12,15 @@ struct MovieResults {
     let page: Int
     let numberOfResults: Int
     let numberOfPages: Int
-    let movies: [Movie]
+    let movies: [Movie]?
 }
 
 extension MovieResults: Decodable {
     enum ResultsCodingKeys: String, CodingKey {
         case page
-        case numberOfResults
-        case numberOfPages
-        case movies
+        case numberOfResults = "total_results"
+        case numberOfPages = "total_pages"
+        case movies = "results"
     }
     
     init(from decoder: Decoder) throws {
@@ -29,6 +29,6 @@ extension MovieResults: Decodable {
         page = try container.decode(Int.self, forKey: .page)
         numberOfResults = try container.decode(Int.self, forKey: .numberOfResults)
         numberOfPages = try container.decode(Int.self, forKey: .numberOfPages)
-        movies = try container.decode([Movie].self, forKey: .movies)
+        movies = try container.decodeIfPresent([Movie].self, forKey: .movies)
     }
 }

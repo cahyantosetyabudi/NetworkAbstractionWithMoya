@@ -16,15 +16,16 @@ protocol Network {
 
 struct NetworkManager {
     static let MovieAPIKey = "7a312711d0d45c9da658b9206f3851dd"
-    let provider = MoyaProvider<MovieAPI>(plugins: [NetworkLoggerPlugin(verbose: true)])
+    let provider = MoyaProvider<MovieAPI>()
     
-    func getNewMovies(page: Int, completion: @escaping ([Movie])->()) {
+    func getNewMovies(page: Int, completion: @escaping ([Movie]) -> Void) {
         provider.request(.newMovies(page: page)) { (result) in
             switch result {
             case let .success(response):
                 do {
                     let results = try JSONDecoder().decode(MovieResults.self, from: response.data)
-                    completion(results.movies)
+                    print("Ini hasil result \(results)")
+                    completion(results.movies!)
                 } catch let error {
                     print(error)
                 }
