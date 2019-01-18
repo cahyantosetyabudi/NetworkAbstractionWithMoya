@@ -6,6 +6,6 @@ target 'NetworkingAbstractionMoya' do
   use_frameworks!
 
   # Pods for NetworkingAbstractionMoya
-  pod 'Moya', '~> 9.0’
+  pod 'Moya', '~> 12.0’
 
 end
